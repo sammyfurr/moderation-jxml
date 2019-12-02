@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -Wall
+CFLAGS = -g -Wall -I.
 BUILD = build/
 
 JSON_PARSE_H = $(BUILD)json.tab.h
@@ -34,7 +34,7 @@ $(JSON_XML_LEX): json_xml.l $(JSON_XML_PARSE_H)
 	flex -o $(JSON_XML_LEX) json_xml.l
 
 jxml: $(JSON_XML_LEX) $(JSON_XML_PARSE)
-	$(CC) $(CFLAGS) -o $(JSON_XML) $(JSON_XML_PARSE_C) $(JSON_XML_LEX) -lfl
+	$(CC) $(CFLAGS) -o $(JSON_XML) json_xml.c $(JSON_XML_PARSE_C) $(JSON_XML_LEX) -lfl
 
 clean:
 	$(RM) $(BUILD)*

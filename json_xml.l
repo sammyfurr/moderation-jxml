@@ -1,11 +1,14 @@
 %{
-#include "json.tab.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "json_xml.tab.h"
+#include "json_xml.h"
 #define MAX_STR_CONST 1024
 void buf_check(char* b, char* p);
+n_const_collect_t* lex_top;
 %}
+			
 %x str
 			
 %%
@@ -22,7 +25,12 @@ void buf_check(char* b, char* p);
            BEGIN(INITIAL);
            *string_buf_ptr = '\0';
            buf_check(string_buf, string_buf_ptr);
-           yylval.JSTR = strdup(string_buf);
+           if((yylval.JSTR = strdup(string_buf)) == NULL){
+             perror("Error parsing string");
+             free_n_const_collect_list(lex_top);
+             exit(EXIT_FAILURE);
+           }
+	   add_n_const_collect(&lex_top, yylval.JSTR);
            return JSTR;
          }
 
@@ -81,11 +89,22 @@ void buf_check(char* b, char* p);
 -?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?  { yylval.NUM = atof (yytext); return NUM; }
 [ \t]    { /*Skip Whitespace*/ }
 \n       { return EOL; }
-.        { printf("Parse error: %s is not correct json\n", yytext); exit(EXIT_FAILURE);}
+.        {
+           printf("Parse error: %s is not correct json\n", yytext);
+           free_n_const_collect_list(lex_top);
+           exit(EXIT_FAILURE);
+         }
+<<EOF>>  {
+           free_collect_list(lex_top);
+           yyterminate();
+         }
+
 %%
+
 void buf_check(char* b, char* p){
     if(p >= b + MAX_STR_CONST){
 	printf("String exceeds buffer size\n");
+	free_n_const_collect_list(lex_top);
 	exit(EXIT_FAILURE);
     }
 }

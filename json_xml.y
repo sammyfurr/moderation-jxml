@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "json_xml.h"
 int yylex (void);
 void yyerror (char const *);
 
@@ -14,14 +15,7 @@ char* list_name;
 int list_depth;
 
 /* We need a way to free the list names after we've copied them*/
-typedef struct n_collect{
-    char *n;
-    struct n_collect* previous;
-} n_collect_t;
-n_collect_t* n_collect_top;
-void add_n_collect(char* n);
-void free_n_collect(n_collect_t * nc);
-void free_n_collect_list();
+n_collect_t* parse_top;
 %}
 
 %define api.value.type union
@@ -62,8 +56,12 @@ jlist:
 jobjpair:
 		JSTR
 		{
-		    list_name = strdup($1);
-		    add_n_collect(list_name);
+		    if ((list_name = strdup($1)) == NULL){
+			perror("Error determining potential list name");
+			free_n_collect_list(parse_top);
+			exit(EXIT_FAILURE);
+		    }
+		    add_n_collect(&parse_top, list_name);
 		    list_name[strlen(list_name)-1] = '\0';
 		    printf("<%s>", $1);
 		}
@@ -86,6 +84,7 @@ json:
 		    list_depth++;
 		    if(list_depth > MAX_LIST_DEPTH){
 			printf("List depth exceeded\n");
+			free_n_collect_list(parse_top);
 			exit(EXIT_FAILURE);
 		    }
 		    list_names[list_depth] = list_name;
@@ -94,7 +93,6 @@ json:
 		jlist
 		LR
 		{
-		    //		    free((void*)list_names[list_depth]);
 		    list_depth--;
 		}
 	|	NUM
@@ -114,37 +112,12 @@ json:
 
 %%
 int main (void){
-    n_collect_top = NULL;
+    parse_top = NULL;
     list_name = NULL;
     list_depth = -1;
     yyparse();
-    free_n_collect_list();
+    free_n_collect_list(parse_top);
     exit(EXIT_SUCCESS);
-}
-
-void add_n_collect(char *n){
-    n_collect_t* nc;
-    if((nc = malloc(sizeof(n_collect_t))) == NULL){
-	perror("Error parsing list");
-	exit(EXIT_FAILURE);
-    }
-    nc->n = n;
-    nc->previous = n_collect_top;
-    n_collect_top = nc;
-}
-
-void free_n_collect(n_collect_t * nc){
-    free((void *)nc->n);
-    free((void *)nc);
-}
-
-void free_n_collect_list(){
-    n_collect_t* nc = n_collect_top;
-    while(n_collect_top != NULL){
-	nc = n_collect_top->previous;
-	free_n_collect(n_collect_top);
-	n_collect_top = nc;
-    }
 }
 
 void
