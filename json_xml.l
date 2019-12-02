@@ -95,7 +95,7 @@ n_const_collect_t* lex_top;
            exit(EXIT_FAILURE);
          }
 <<EOF>>  {
-           free_collect_list(lex_top);
+           free_const_collect_list(lex_top);
            yyterminate();
          }
 

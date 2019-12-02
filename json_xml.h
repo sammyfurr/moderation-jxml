@@ -18,6 +18,6 @@ void free_n_collect_list(n_collect_t* top);
 void add_n_const_collect(n_const_collect_t** top, char const* n);
 void free_n_const_collect(n_const_collect_t * nc);
 void free_n_const_collect_list(n_const_collect_t* top);
-void free_collect_list(n_const_collect_t* top);
-void free_collect(n_const_collect_t * nc);
+void free_const_collect_list(n_const_collect_t* top);
+void free_const_collect(n_const_collect_t * nc);
 #endif

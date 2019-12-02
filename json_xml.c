@@ -54,15 +54,15 @@ void free_n_const_collect_list(n_const_collect_t* top){
     }
 }
 
-void free_collect(n_const_collect_t * nc){
+void free_const_collect(n_const_collect_t * nc){
     free((void *)nc);
 }
 
-void free_collect_list(n_const_collect_t* top){
+void free_const_collect_list(n_const_collect_t* top){
     n_const_collect_t* nc;
     while(top != NULL){
 	nc = top->previous;
-	free_collect(top);
+	free_const_collect(top);
 	top = nc;
     }
 }
