@@ -78,7 +78,7 @@ void buf_check(char* b, char* p);
 "true"   { yylval.TE = "true"; return TE; }
 "false"  { yylval.FE = "false"; return FE; }
 "null"   { yylval.NL = "null"; return NL; }
-[0-9]+   { yylval.NUM = atof (yytext); return NUM; }
+-?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?  { yylval.NUM = atof (yytext); return NUM; }
 [ \t]    { /*Skip Whitespace*/ }
 \n       { return EOL; }
 .        { printf("Parse error: %s is not correct json\n", yytext); exit(EXIT_FAILURE);}
