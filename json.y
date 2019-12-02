@@ -41,6 +41,7 @@ jobjpair:
 		OS
 		{ printf(":"); }
 		json
+		{ free ((void*)$1); }
 	;
 
 jobj:		jobjpair
@@ -61,7 +62,7 @@ json:
 	|	NUM
 		{ printf("%.10g", $1); }
 	|	JSTR
-		{ printf("%s", $1); }
+		{ printf("%s", $1); free ((void*)$1); }
 	|	TE
 		{ printf("%s", $1); }
 	|	FE
