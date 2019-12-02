@@ -1,12 +1,17 @@
 %{
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "json_xml.tab.h"
 #include "json_xml.h"
 #define MAX_STR_CONST 1024
+/* Check if we've overflowed our string buffer. */
 void buf_check(char* b, char* p);
+/* Tracks names for garbage collection, using functions declared in
+ json_xml.h */
 n_const_collect_t* lex_top;
+
 %}
 			
 %x str
@@ -15,13 +20,16 @@ n_const_collect_t* lex_top;
          char string_buf[MAX_STR_CONST];
          char *string_buf_ptr;
 
-\"       {
+\"       { /* Quotes begin jstrings.  We're cheating a bit here by not
+              adding the quotes to the string in our output.  This is
+              because it's far more annoying to strip them out later
+              when we convert to XML. */
            string_buf_ptr = string_buf;
            buf_check(string_buf, string_buf_ptr);
            BEGIN(str);
          }
 
-<str>\"  { /* saw closing quote - all done */
+<str>\"  { /* Closing quote ends jstring. */
            BEGIN(INITIAL);
            *string_buf_ptr = '\0';
            buf_check(string_buf, string_buf_ptr);
@@ -34,7 +42,7 @@ n_const_collect_t* lex_top;
            return JSTR;
          }
 
-<str>\\\" {
+<str>\\\" { /* These blocks parse escaped chars.  */
            *string_buf_ptr++ = '\"';
            buf_check(string_buf, string_buf_ptr);
          }
@@ -70,8 +78,6 @@ n_const_collect_t* lex_top;
 <str>[^\\\n\"]+ { /* Any character but \, newline, or "*/
            char *yptr = yytext;
            while (*yptr){
-             /* if(string_buf_ptr > string_buf + MAX_STR_CONST) */
-             /*   exit(EXIT_FAILURE); */
              *string_buf_ptr++ = *yptr++;
 	     buf_check(string_buf, string_buf_ptr);
          }
@@ -87,7 +93,7 @@ n_const_collect_t* lex_top;
 "false"  { yylval.FE = "false"; return FE; }
 "null"   { yylval.NL = "null"; return NL; }
 -?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?  { yylval.NUM = atof (yytext); return NUM; }
-[ \t]    { /*Skip Whitespace*/ }
+[ \t]    { /* Skip Whitespace */ }
 \n       { return EOL; }
 .        {
            printf("Parse error: %s is not correct json\n", yytext);

@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include "json_xml.h"
 
+/* See header file for descriptions of functions. */
+
 void add_n_collect(n_collect_t** top, char *n){
     n_collect_t* nc;
     if((nc = malloc(sizeof(n_collect_t))) == NULL){
