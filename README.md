@@ -33,6 +33,6 @@ This will give you a REPL to put JSON in.  For example:
 ```
 ## Paper
 
-My moderation paper can be found in the folder ```paper```.  The file is called ```jxml.pdf```.  I've also included the LaTeX and bibliography source files in the folder.
+My moderation paper can be found in the folder ```paper```.  The file is called ```jxml.pdf```.  I've also included the LaTeX and bibliography source files in the folder.  I've also included my lab5 JSON to XML interpreter for comparison.  It is called ```lab5b.rkt```
 
 # Thank you!
