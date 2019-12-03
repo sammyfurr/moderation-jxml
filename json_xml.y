@@ -54,15 +54,14 @@ input:
 		;
 
 /* A line can be just \n, some JSON followed by \n, or an error (bad
- json).  If this wasn't a REPL we would want to recover so nicely from
- bad JSON. */
+ json). */
 line:
 		EOL
 		{ printf("\n"); }
 	|	json EOL
 		{ printf("\n"); }
 	|	error EOL
-		{ yyerrok; }
+		{ }
 	;
 
 /* A json list is json , json , json ...  */
@@ -167,5 +166,7 @@ int main (void){
 void
 yyerror (char const *s)
 {
+  free_n_collect_list(parse_top);
   fprintf (stderr, "%s\n", s);
+  exit (EXIT_FAILURE);
 }

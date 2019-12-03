@@ -1,0 +1,82 @@
+Correctness:
+
+Single JSON tests.  Format is:
+testn
+resultn
+
+"test"
+test
+
+"test\b"
+test
+
+"test\n"
+test
+
+
+"Test"
+Test
+
+3
+3
+
+345
+345
+
+-3
+-3
+
+-345
+-345
+
+8.0
+8
+
+0.8
+0.8
+
+-8.0
+-8
+
+-0.8
+-0.8
+
+345e10
+3.45e+12
+
+345E10
+3.45e+12
+
+345e+10
+3.45e+12
+
+345E-10
+3.45e-08
+
+-4567.6748e-12
+-4.5676748e-09
+
+true
+true
+
+false
+false
+
+null
+null
+
+thiswillfaillexing
+Parse error: t is not correct json
+
+"thisfailstoo
+Error, unterminated string.
+
+Complex JSON tests.  Format is:
+testn
+resultn
+
+{"numbers" : [3, 4, 5, 6, 7]}
+<numbers><number>3</number><number>4</number></number><number>5</number></number><number>6</number></number><number>7</number></numbers>
+
+{"Person" : { "Last Name" : "Furr", "First Name" : "Samuel", "Formal Title" : "Mr.", "Address" : {"Street" : "15 Warren", "City" : "Kingston", "State" : "New York", "Zip" : "12401"}, "Phone Numbers" : [{"type" : "home", "number" : "845 777 8888"}, {"type" : "cell", "number" : "123 456 7890"}]}}
+<Person><Last Name>Furr</Last Name><First Name>Samuel</First Name><Formal Title>Mr.</Formal Title><Address><Street>15 Warren</Street><City>Kingston</City><State>New York</State><Zip>12401</Zip></Address><Phone Numbers><Phone Number><type>home</type><number>845 777 8888</number></Phone Number><Phone Number><type>cell</type><number>123 456 7890</number></Phone Number></Phone Numbers></Person>

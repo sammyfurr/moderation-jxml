@@ -42,6 +42,12 @@ n_const_collect_t* lex_top;
            return JSTR;
          }
 
+<str>\n  {
+           printf ("Error, unterminated string.\n");
+           free_n_const_collect_list(lex_top);
+           exit (EXIT_FAILURE);
+         }
+
 <str>\\\" { /* These blocks parse escaped chars.  */
            *string_buf_ptr++ = '\"';
            buf_check(string_buf, string_buf_ptr);
