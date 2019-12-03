@@ -1,4 +1,5 @@
 *
 !.gitignore
+!jxml.pdf
 !jxml.tex
 !jxmlbib.bib
