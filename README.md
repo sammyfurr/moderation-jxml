@@ -16,7 +16,7 @@ After Flex and Bison are installed, building is easy:
 make
 ```
 
-will create the executable ```jxml``` in the ```build``` directory, along with the lexer and parser files ```json_xml.yy.c```, ```json_xml.tab.c```, and ```json_xml.tab.h```.  You can ignore these.
+will create the executable ```jxml``` in the ```build``` directory, along with the lexer and parser files ```json_xml.yy.c```, ```json_xml.tab.c```, and ```json_xml.tab.h```.
 
 ## Usage
 
