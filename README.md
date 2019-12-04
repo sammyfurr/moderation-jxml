@@ -40,11 +40,11 @@ The test harness is a perl script called ```jxml_test.pl```.  To run the script,
 
 ### Usage
 
-To use the test harness, you can run ```make test``` to run all tests.  Depending on the number of tests installed this may take a while, since memory tests are included.  To only run I/O correctness tests, run ```perl jxml_test.pl``` to run memory tests as well run ```perl jxml_test.pl```.
+To use the test harness, you can run ```make test``` to run all tests.  Depending on the number of tests installed this may take a while, since memory tests are included.  To only run I/O correctness tests, run ```perl jxml_test.pl```.  To run memory tests as well run ```perl jxml_test.pl```.
 
 ### Adding tests
 
-Only a few tests are included.  To add new tests, you must add a test file with the name ```t<n>``` containing the input you would like to test (don't forget the newline at the end of the file!) to the ```tests``` directory.  You must also add an expectation file with the same name containing the expected output (don't forget the newline at the end of the file!) to the ```tests/exp``` directory.  The results of your tests will be in ```tests/res```.  Results are removed every time you run ```make test```.
+Only a few tests are included.  To add new tests, you must add a test file, n, with the name ```t<n>``` containing the input you would like to test (don't forget the newline at the end of the file!) to the ```tests``` directory.  You must also add an expectation file with the same name containing the expected output (don't forget the newline at the end of the file!) to the ```tests/exp``` directory.  The results of your tests will be in ```tests/res```.  Results are removed every time you run ```make test```.
 
 ## Paper
 
