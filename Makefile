@@ -1,6 +1,7 @@
 CC = gcc
 CFLAGS = -g -Wall -I.
 BUILD = build/
+TESTS = tests/
 
 JSON_XML_PARSE_H = $(BUILD)json_xml.tab.h
 JSON_XML_PARSE_C = $(BUILD)json_xml.tab.c
@@ -21,5 +22,10 @@ $(JSON_XML_LEX): json_xml.l $(JSON_XML_PARSE_H)
 jxml: $(JSON_XML_LEX) $(JSON_XML_PARSE)
 	$(CC) $(CFLAGS) -o $(JSON_XML) json_xml.c $(JSON_XML_PARSE_C) $(JSON_XML_LEX) -lfl
 
+test:
+	$(RM) $(TESTS)res/*
+	perl jxml_test.pl -v
+
 clean:
 	$(RM) $(BUILD)*
+
